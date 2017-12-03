@@ -2,44 +2,51 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from mptt.models import MPTTModel, TreeForeignKey
 
-
+#
 # Create your models here.
 # Model User.
-class Profile (models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    gender = models.CharField(max_length = 1)
-    birth_date = models.DateTimeField()
-
-    def __str__(self):
-        return str(self.id)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    # custom fields for user
+    type = models.IntegerField(default=0)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.objects.create(user=instance)
+        UserProfile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+    instance.userprofile.save()
+
+#
+# class Users(AbstractUser):
+#     type = models.IntegerField(default=0)
+#     #any other fields you want
+
 
 #   Модель торговой точки
 class Place (models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = gender = models.CharField(max_length = 100)
-    lat = models.FloatField(_('Latitude'), blank=True, null=True)
-    lon = models.FloatField(_('Longitude'), blank=True, null=True)
+    name = models.CharField(max_length = 100)
+    lat = models.FloatField(blank=True, null=True, verbose_name='Latitude')
+    lon = models.FloatField(blank=True, null=True, verbose_name='Longitude')
 
 # Модель категории
-class Category (models.Model):
-    name = models.CharField(max_length=100)
-    cost = models.FloatField(blank=True, null=True)
+class Category(MPTTModel):
+    name = models.CharField(max_length=50, unique=True)
+    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=False)
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
 
 # Модель товара
 class Item (models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
-    name = gender = models.CharField(max_length=100)
+    name = models.CharField(max_length=100)
     cost = models.FloatField(blank=True, null=True)
 
 

@@ -1,3 +1,8 @@
+from django.test import TestCase
+
+# Create your tests here.
+
+
 from api.models import Category
 
 rock = Category.objects.create(name="Rock")
