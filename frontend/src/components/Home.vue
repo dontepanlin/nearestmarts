@@ -5,10 +5,10 @@
         <v-card height="185px" flat color="secondary">
           <v-card-text>
             <div>
-              <v-btn color="primary" dark to="/login">Primary</v-btn>
+              <v-btn color="primary" dark to="/login">Login</v-btn>
             </div>
             <div>
-              <v-btn color="error" dark>Error</v-btn>
+              <v-btn color="primary" dark to="/registration">Reg</v-btn>
             </div>
             <div>
               <v-btn color="primary" dark disabled>Disabled</v-btn>

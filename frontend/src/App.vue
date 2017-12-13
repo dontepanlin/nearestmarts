@@ -17,6 +17,7 @@
             <v-flex xs6>
               <v-subheader v-if="item.heading">
                 {{ item.heading }}
+
               </v-subheader>
             </v-flex>
             <v-flex xs6 class="text-xs-center">
@@ -31,6 +32,7 @@
               <v-list-tile-content>
                 <v-list-tile-title>
                   {{ item.text }}
+
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -45,6 +47,7 @@
               <v-list-tile-content>
                 <v-list-tile-title>
                   {{ child.text }}
+
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -56,6 +59,7 @@
             <v-list-tile-content>
               <v-list-tile-title>
                 {{ item.text }}
+
               </v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
@@ -69,9 +73,10 @@
       clipped-left
       fixed
     >
-      <v-toolbar-title :style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'" class="ml-0 pl-3">
+      <v-toolbar-title :style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'"
+                       class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <span class="hidden-xs-only">Nearest Mart</span>
+        <v-btn flat to="/" depressed="false"><span class="hidden-xs-only">Nearest Mart</span></v-btn>
       </v-toolbar-title>
       <v-text-field
         light
@@ -98,30 +103,37 @@
       </div>
     </v-toolbar>
     <v-content>
-     <router-view>
-    </router-view>
+      <router-view>
+      </router-view>
     </v-content>
-   <login></login>
+    <login></login>
+    <registration></registration>
   </v-app>
 </template>
 
 <script>
-  import auth from './auth'
+  import Login from './components/Login.vue'
+  import Registration from './components/Registration.vue'
+
   export default {
     name: 'app',
+    components: {
+      'login': Login,
+      'registration': Registration
+    },
     data: () => ({
       drawer: null,
       items: [
-        { icon: 'contacts', text: 'Contacts' },
-        { icon: 'history', text: 'Frequently contacted' },
-        { icon: 'content_copy', text: 'Duplicates' },
+        {icon: 'contacts', text: 'Contacts'},
+        {icon: 'history', text: 'Frequently contacted'},
+        {icon: 'content_copy', text: 'Duplicates'},
         {
           icon: 'keyboard_arrow_up',
           'icon-alt': 'keyboard_arrow_down',
           text: 'Labels',
           model: true,
           children: [
-            { icon: 'add', text: 'Create label' }
+            {icon: 'add', text: 'Create label'}
           ]
         },
         {
@@ -130,18 +142,18 @@
           text: 'More',
           model: false,
           children: [
-            { text: 'Import' },
-            { text: 'Export' },
-            { text: 'Print' },
-            { text: 'Undo changes' },
-            { text: 'Other contacts' }
+            {text: 'Import'},
+            {text: 'Export'},
+            {text: 'Print'},
+            {text: 'Undo changes'},
+            {text: 'Other contacts'}
           ]
         },
-        { icon: 'settings', text: 'Settings' },
-        { icon: 'chat_bubble', text: 'Send feedback' },
-        { icon: 'help', text: 'Help' },
-        { icon: 'phonelink', text: 'App downloads' },
-        { icon: 'keyboard', text: 'Go to the old version' }
+        {icon: 'settings', text: 'Settings'},
+        {icon: 'chat_bubble', text: 'Send feedback'},
+        {icon: 'help', text: 'Help'},
+        {icon: 'phonelink', text: 'App downloads'},
+        {icon: 'keyboard', text: 'Go to the old version'}
       ]
     }),
     props: {
@@ -151,14 +163,13 @@
 </script>
 
 
-
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  #app {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
 </style>
