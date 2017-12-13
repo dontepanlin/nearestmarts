@@ -18,6 +18,7 @@
               <v-subheader v-if="item.heading">
                 {{ item.heading }}
 
+
               </v-subheader>
             </v-flex>
             <v-flex xs6 class="text-xs-center">
@@ -32,6 +33,7 @@
               <v-list-tile-content>
                 <v-list-tile-title>
                   {{ item.text }}
+
 
                 </v-list-tile-title>
               </v-list-tile-content>
@@ -48,6 +50,7 @@
                 <v-list-tile-title>
                   {{ child.text }}
 
+
                 </v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
@@ -59,6 +62,7 @@
             <v-list-tile-content>
               <v-list-tile-title>
                 {{ item.text }}
+
 
               </v-list-tile-title>
             </v-list-tile-content>
@@ -76,7 +80,7 @@
       <v-toolbar-title :style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'"
                        class="ml-0 pl-3">
         <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-btn flat to="/" depressed="false"><span class="hidden-xs-only">Nearest Mart</span></v-btn>
+        <v-btn flat to="/"><span class="hidden-xs-only">Nearest Mart</span></v-btn>
       </v-toolbar-title>
       <v-text-field
         light
@@ -106,14 +110,15 @@
       <router-view>
       </router-view>
     </v-content>
-    <login></login>
-    <registration></registration>
+    <login ref="login" v-bind:method="signup"></login>
+    <registration ref="registration" v-bind:method="login"></registration>
   </v-app>
 </template>
 
 <script>
   import Login from './components/Login.vue'
   import Registration from './components/Registration.vue'
+  import auth from './auth'
 
   export default {
     name: 'app',
@@ -121,8 +126,19 @@
       'login': Login,
       'registration': Registration
     },
+    methods: {
+      signup: function () {
+        this.$refs.login.dialog_log = false
+        this.$refs.registration.dialog_reg = true
+      },
+      login: function () {
+        this.$refs.registration.dialog_reg = false
+        this.$refs.login.dialog_log = true
+      }
+    },
     data: () => ({
       drawer: null,
+      user: auth.user,
       items: [
         {icon: 'contacts', text: 'Contacts'},
         {icon: 'history', text: 'Frequently contacted'},

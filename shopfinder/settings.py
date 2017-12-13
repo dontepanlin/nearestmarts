@@ -144,7 +144,12 @@ REST_AUTH_SERIALIZERS = {
     'USER_DETAILS_SERIALIZER': 'api.serializers.UserSerializer'
 }
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'google.com',
+    'hostname.example.com',
+    'localhost:8000',
+    '127.0.0.1:8080'
+)
 
 AUTHENTICATION_BACKENDS = (
     # `allauth` specific authentication methods, such as login by e-mail
@@ -155,3 +160,5 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = 'email' # (="username" | "email" | "username_email)
 ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+CORS_ALLOW_CREDENTIALS = True

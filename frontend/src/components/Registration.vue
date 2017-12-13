@@ -1,11 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" width="600px">
+  <v-dialog v-model="dialog_reg" width="600px">
     <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
     <v-card>
       <v-toolbar style="flex: 0 0 auto;" dark class="primary">
         <v-toolbar-title class="text-md-center">Регистрация</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click.native="dialog = false" dark>
+        <v-btn icon @click.native="dialog_reg = false" dark>
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -45,7 +45,7 @@
         </v-layout>
       </v-container>
       <v-card-actions>
-        <v-btn color="blue darken-1" flat @click.native="dialog = false">Login</v-btn>
+        <v-btn color="blue darken-1" flat @click="method">Login</v-btn>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" flat @click="submit">Sign Up</v-btn>
       </v-card-actions>
@@ -54,13 +54,15 @@
 </template>
 
 <script>
-  const API_URL = 'http://localhost:8000/api/'
-  const REG_URL = API_URL + 'users/registration/'
+  import auth from '../auth'
+//  const API_URL = 'http://localhost:8000/api/'
+//  const REG_URL = API_URL + 'users/registration/'
   export default {
     name: 'registration',
+    props: ['method'],
     data () {
       return {
-        dialog: false,
+        dialog_reg: false,
         e1: true,
         e2: true,
         valid: false,
@@ -93,14 +95,22 @@
       submit () {
         if (this.$refs.form.validate()) {
 //           Native form submission is not yet supported
-          this.axios.post(REG_URL, {
+          var credentials = {
             email: this.email,
             password1: this.password,
             password2: this.confirm,
             username: this.email
-          }).then((response) => {
-            console.log(response.data)
-          })
+          }
+
+          auth.signup(this, credentials)
+//          this.axios.post(REG_URL, {
+//            email: this.email,
+//            password1: this.password,
+//            password2: this.confirm,
+//            username: this.email
+//          }).then((response) => {
+//            console.log(response.data)
+//          })
         }
       }
     }

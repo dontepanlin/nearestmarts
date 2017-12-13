@@ -1,11 +1,11 @@
 <template>
-  <v-dialog v-model="dialog" width="600px">
+  <v-dialog v-model="dialog_log" width="600px">
     <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
     <v-card>
       <v-toolbar style="flex: 0 0 auto;" dark class="primary">
         <v-toolbar-title class="text-md-center">Вход</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon @click.native="dialog = false" dark>
+        <v-btn icon @click.native="dialog_log = false" dark>
           <v-icon>close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -36,7 +36,7 @@
         </v-layout>
       </v-container>
       <v-card-actions>
-        <v-btn color="blue darken-1" flat @click.native="dialog = false">Sign Up</v-btn>
+        <v-btn color="blue darken-1" flat @click="method">Sign Up</v-btn>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" flat @click="submit">Log In</v-btn>
       </v-card-actions>
@@ -45,13 +45,15 @@
 </template>
 
 <script>
-  const API_URL = 'http://localhost:8000/api/'
-  const LOGIN_URL = API_URL + 'users/login/'
+  import auth from '../auth'
+  //  const API_URL = 'http://localhost:8000/api/'
+  //  const LOGIN_URL = API_URL + 'users/login/'
   export default {
     name: 'login',
+    props: ['method'],
     data () {
       return {
-        dialog: false,
+        dialog_log: false,
         e1: true,
         valid: true,
         tok: '',
@@ -74,16 +76,22 @@
 //           Native form submission is not yet supported
           console.log(this.email)
           console.log(this.pass)
-          this.axios.post(LOGIN_URL, {
+          var credentials = {
             email: this.email,
             password: this.pass
-          }).then((response) => {
-            localStorage.setItem('token', response.data.token)
-            this.dialog = false
-          }).catch(error => {
-            console.log('Error login')
-            console.log(error)
-          })
+          }
+
+          auth.login(this, credentials)
+//          this.axios.post(LOGIN_URL, {
+//            email: this.email,
+//            password: this.pass
+//          }).then((response) => {
+//            localStorage.setItem('token', response.data.token)
+//            this.dialog = false
+//          }).catch(error => {
+//            console.log('Error login')
+//            console.log(error)
+//          })
         }
       }
     }
