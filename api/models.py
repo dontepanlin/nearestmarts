@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from mptt.models import MPTTModel, TreeForeignKey
 
+
 #
 # Create your models here.
 # Model User.
@@ -12,14 +13,17 @@ class UserProfile(models.Model):
     # custom fields for user
     type = models.IntegerField(default=0)
 
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
+
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.userprofile.save()
+
 
 #
 # class Users(AbstractUser):
@@ -28,11 +32,13 @@ def save_user_profile(sender, instance, **kwargs):
 
 
 #   Модель торговой точки
-class Place (models.Model):
+class Place(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length = 100)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=255, default='')
     lat = models.FloatField(blank=True, null=True, verbose_name='Latitude')
     lon = models.FloatField(blank=True, null=True, verbose_name='Longitude')
+
 
 # Модель категории
 class Category(MPTTModel):
@@ -42,11 +48,11 @@ class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
+
 # Модель товара
-class Item (models.Model):
+class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     place = models.ForeignKey(Place, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
+    description = models.CharField(max_length=255, default='')
     cost = models.FloatField(blank=True, null=True)
-
-

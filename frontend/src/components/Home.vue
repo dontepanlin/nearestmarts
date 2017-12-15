@@ -1,30 +1,28 @@
 <template>
-  <v-container fluid="fluid" class="text-xs-center">
-    <v-layout row wrap>
-      <v-flex xs12 sm6><span>Raised Dark Theme</span>
-        <v-card height="185px" flat color="secondary">
-          <v-card-text>
-            <div>
-              <v-btn color="primary" dark to="/login">Login</v-btn>
-            </div>
-            <div>
-              <v-btn color="primary" dark to="/registration">Reg</v-btn>
-            </div>
-            <div>
-              <v-btn color="primary" dark disabled>Disabled</v-btn>
-            </div>
-          </v-card-text>
-        </v-card>
-      </v-flex>
-    </v-layout>
-  </v-container>
+  <v-layout row>
+    <v-flex xs12 sm6 offset-sm3>
+      <v-card>
+        <v-list>
+          <v-list-tile v-for="item in get_list()" v-bind:key="item.name" @click="">
+            <v-list-tile-content>
+              <v-list-tile-title v-text="item.name"></v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
+  import api from '../api'
+
   export default {
     data: () => ({
-      dialog: false
+      dialog: false,
+      items: {}
     }),
+
     props: {
       source: String
     }

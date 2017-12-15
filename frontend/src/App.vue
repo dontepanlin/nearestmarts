@@ -96,7 +96,8 @@
         <v-btn icon>
           <v-icon>notifications</v-icon>
         </v-btn>
-        <v-btn icon large>
+        <v-menu offset-y>
+      <v-btn icon large slot="activator">
           <v-avatar size="32px" tile>
             <img
               src="https://vuetifyjs.com/static/doc-images/logo.svg"
@@ -104,6 +105,12 @@
             >
           </v-avatar>
         </v-btn>
+      <v-list>
+        <v-list-tile v-for="item in items1" :key="item.title" @click="menu_method(item)">
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
       </div>
     </v-toolbar>
     <v-content>
@@ -127,6 +134,13 @@
       'registration': Registration
     },
     methods: {
+      menu_method: function (item) {
+        if (item.title === 'Вход') {
+          this.login()
+        } else if (item.title === 'Регистрация') {
+          this.signup()
+        }
+      },
       signup: function () {
         this.$refs.login.dialog_log = false
         this.$refs.registration.dialog_reg = true
@@ -139,6 +153,10 @@
     data: () => ({
       drawer: null,
       user: auth.user,
+      items1: [
+        { title: 'Вход' },
+        { title: 'Регистрация' }
+      ],
       items: [
         {icon: 'contacts', text: 'Contacts'},
         {icon: 'history', text: 'Frequently contacted'},

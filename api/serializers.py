@@ -2,8 +2,8 @@ from rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
 from .models import Place, Category, Item
 
-class UserSerializer(UserDetailsSerializer):
 
+class UserSerializer(UserDetailsSerializer):
     type = serializers.IntegerField(source="userprofile.type")
 
     class Meta(UserDetailsSerializer.Meta):
@@ -24,24 +24,23 @@ class UserSerializer(UserDetailsSerializer):
 
 
 class PlaceSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Place
-        fields = ('id', 'user', 'name', 'lat', 'lon')
+        fields = ('id', 'user', 'name', 'description', 'lat', 'lon')
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields=('name',)
+        fields = ('name',)
 
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
         fields['children'] = CategorySerializer(many=True)
         return fields
 
-class ItemSerializer(serializers.ModelSerializer):
 
+class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ('id', 'category', 'place', 'name', 'cost')
+        fields = ('id', 'category', 'place', 'name', 'description', 'cost')

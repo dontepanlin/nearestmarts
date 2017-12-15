@@ -7,6 +7,7 @@ import Vuetify from 'vuetify'
 import VueLocalStorage from 'vue-ls'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import VueCookie from 'vue-cookie'
 import auth from './auth'
 import('vuetify/dist/vuetify.min.css')
 
@@ -41,9 +42,7 @@ axios(
     }],
 
     // `headers` are custom headers to be sent
-    headers: {'X-Requested-With': 'XMLHttpRequest',
-      'Authorization': '',
-      'Set-Cookie': ''},
+    headers: {},
 
     // `params` are the URL parameters to be sent with the request
     // Must be a plain object or a URLSearchParams object
@@ -108,8 +107,9 @@ axios(
 
 Vue.use(VueAxios, axios)
 Vue.use(VueLocalStorage)
+Vue.use(VueCookie)
 
-axios.defaults.headers.common['Authorization'] = auth.getAuthHeader()
+axios.defaults.headers.common['Authorization'] = auth.getAuthHeader().Authorization
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

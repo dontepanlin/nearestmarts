@@ -19,15 +19,19 @@ export default {
   // Send a request to the login URL and save the returned JWT
   login (context, creds) {
     context.axios.post(LOGIN_URL, {
+      withCredentials: true,
       email: creds.email,
       password: creds.password
     }).then((response) => {
       this.user.authenticated = true
       console.log(response.data)
+      console.log(response)
       localStorage.setItem('token', response.data.key)
-      axios.defaults.headers.common['Authorization'] = this.getAuthHeader()
+      axios.defaults.headers.common['Authorization'] = this.getAuthHeader().Authorization
       context.dialog_log = false
       this.user_info(context)
+      console.log(context.$cookie.get('csrftoken'))
+      console.log(context.$cookie.get('sessionid'))
     }).catch(error => {
       console.log(creds.email)
       console.log(creds.password)
@@ -37,13 +41,27 @@ export default {
   },
 
   user_info (context) {
-    context.axios.get(USER_URL, {withCredentials: true}
+    context.axios.get(USER_URL
     ).then((response) => {
       console.log(response.data)
       localStorage.setItem('user', response.data)
     }).catch(error => {
-      console.log('Reg error')
-      console.log(error)
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data)
+        console.log(error.response.status)
+        console.log(error.response.headers)
+      } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request)
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message)
+      }
+      console.log(error.config)
     })
   },
 
@@ -55,7 +73,7 @@ export default {
       username: creds.username
     }).then((response) => {
       localStorage.setItem('token', response.data.key)
-      axios.headers.common['Authorization'] = this.getAuthHeader()
+      axios.headers.common['Authorization'] = this.getAuthHeader().Authorization
       this.user.authenticated = true
       context.dialog_reg = false
       console.log(response.data)
