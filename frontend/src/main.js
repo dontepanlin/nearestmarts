@@ -68,10 +68,10 @@ axios(
     responseType: 'json', // default
 
     // `xsrfCookieName` is the name of the cookie to use as a value for xsrf token
-    xsrfCookieName: 'XSRF-TOKEN', // default
+    xsrfCookieName: 'csrftoken ', // default
 
     // `xsrfHeaderName` is the name of the http header that carries the xsrf token value
-    xsrfHeaderName: 'X-XSRF-TOKEN', // default
+    xsrfHeaderName: 'HTTP_X_CSRFTOKEN', // default
 
     // `onUploadProgress` allows handling of progress events for uploads
     onUploadProgress: function (progressEvent) {
@@ -109,7 +109,9 @@ Vue.use(VueAxios, axios)
 Vue.use(VueLocalStorage)
 Vue.use(VueCookie)
 
-axios.defaults.headers.common['Authorization'] = auth.getAuthHeader().Authorization
+if (localStorage.getItem('token')) {
+  axios.defaults.headers.common['Authorization'] = auth.getAuthHeader().Authorization
+}
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

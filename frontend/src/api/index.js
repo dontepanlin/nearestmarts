@@ -11,10 +11,8 @@ const PLACES = API_URL + 'places/'
 
 export default {
   place_list (context) {
-    context.axios.get(PLACES, {
+    return context.axios.get(PLACES, {
       withCredentials: true
-    }).then((response) => {
-      return response.data
     })
   }
 }
