@@ -13,11 +13,16 @@ export default {
 
   // User object will let us check authentication status
   user: {
-    authenticated: false
+    authenticated: false,
+    location: {
+      lat: 61.93,
+      lng: 73.65
+    }
   },
 
   // Send a request to the login URL and save the returned JWT
   login (context, creds) {
+    var ret = false
     context.axios.post(LOGIN_URL, {
       withCredentials: true,
       email: creds.email,
@@ -30,14 +35,12 @@ export default {
       axios.defaults.headers.common['Authorization'] = this.getAuthHeader().Authorization
       context.dialog_log = false
       this.user_info(context)
-      console.log(context.$cookie.get('csrftoken'))
-      console.log(context.$cookie.get('sessionid'))
+      this.ret = true
     }).catch(error => {
-      console.log(creds.email)
-      console.log(creds.password)
       console.log('Error login')
       console.log(error)
     })
+    return ret
   },
 
   user_info (context) {
@@ -67,6 +70,7 @@ export default {
 
   signup (context, creds) {
     context.axios.post(REG_URL, {
+      withCredentials: true,
       email: creds.email,
       password1: creds.password1,
       password2: creds.password2,
@@ -76,6 +80,7 @@ export default {
       axios.headers.common['Authorization'] = this.getAuthHeader().Authorization
       this.user.authenticated = true
       context.dialog_reg = false
+      this.user_info(context)
       console.log(response.data)
     }).catch(error => {
       console.log('Reg error')

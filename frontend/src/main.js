@@ -9,6 +9,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookie from 'vue-cookie'
 import auth from './auth'
+import * as VueGoogleMaps from 'vue2-google-maps'
 import('vuetify/dist/vuetify.min.css')
 
 Vue.config.productionTip = false
@@ -108,6 +109,15 @@ axios(
 Vue.use(VueAxios, axios)
 Vue.use(VueLocalStorage)
 Vue.use(VueCookie)
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyDPUEbKSTrgVdw5OvcxrfudZuFv9jYcFaY',
+    libraries: 'places' // This is required if you use the Autocomplete plugin
+    // OR: libraries: 'places,drawing'
+    // OR: libraries: 'places,drawing,visualization'
+    // (as you require)
+  }
+})
 
 if (localStorage.getItem('token')) {
   axios.defaults.headers.common['Authorization'] = auth.getAuthHeader().Authorization

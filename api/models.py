@@ -39,6 +39,9 @@ class Place(models.Model):
     lat = models.FloatField(blank=True, null=True, verbose_name='Latitude')
     lon = models.FloatField(blank=True, null=True, verbose_name='Longitude')
 
+    def __str__(self):
+        return self.name
+
 
 # Модель категории
 class Category(MPTTModel):
@@ -48,11 +51,17 @@ class Category(MPTTModel):
     class MPTTMeta:
         order_insertion_by = ['name']
 
+    def __str__(self):
+        return self.name
+
 
 # Модель товара
 class Item(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, related_name='items', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=255, default='')
     cost = models.FloatField(blank=True, null=True)
+
+    def __str__(self):
+        return self.name

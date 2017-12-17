@@ -22,17 +22,22 @@ class UserSerializer(UserDetailsSerializer):
             profile.save()
         return instance
 
+class ItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Item
+        fields = ('id', 'category', 'place', 'name', 'description', 'cost')
 
 class PlaceSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, read_only=True)
     class Meta:
         model = Place
-        fields = ('id', 'user', 'name', 'description', 'lat', 'lon')
+        fields = ('id', 'user', 'name', 'description', 'lat', 'lon', 'items')
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name',)
+        fields = ('name','parent')
 
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
@@ -40,7 +45,4 @@ class CategorySerializer(serializers.ModelSerializer):
         return fields
 
 
-class ItemSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Item
-        fields = ('id', 'category', 'place', 'name', 'description', 'cost')
+

@@ -5,69 +5,18 @@
       clipped
       app
       v-model="drawer"
+      class="blue accent-1"
     >
-      <v-list dense>
-        <template v-for="(item, i) in items">
-          <v-layout
-            row
-            v-if="item.heading"
-            align-center
-            :key="i"
-          >
-            <v-flex xs6>
-              <v-subheader v-if="item.heading">
-                {{ item.heading }}
-
-
-              </v-subheader>
-            </v-flex>
-            <v-flex xs6 class="text-xs-center">
-              <a href="#!" class="body-2 black--text">EDIT</a>
-            </v-flex>
-          </v-layout>
-          <v-list-group v-else-if="item.children" v-model="item.model" no-action>
-            <v-list-tile slot="item" @click="">
-              <v-list-tile-action>
-                <v-icon>{{ item.model ? item.icon : item['icon-alt'] }}</v-icon>
-              </v-list-tile-action>
+      <v-list>
+        <v-subheader v-text="items.header"></v-subheader>
+        <template v-for="cat in categories">
+            <v-list-tile @click="">
               <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ item.text }}
-
-
-                </v-list-tile-title>
+                <v-list-tile-title>{{ cat.name }}</v-list-tile-title>
               </v-list-tile-content>
             </v-list-tile>
-            <v-list-tile
-              v-for="(child, i) in item.children"
-              :key="i"
-              @click=""
-            >
-              <v-list-tile-action v-if="child.icon">
-                <v-icon>{{ child.icon }}</v-icon>
-              </v-list-tile-action>
-              <v-list-tile-content>
-                <v-list-tile-title>
-                  {{ child.text }}
-
-
-                </v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-          </v-list-group>
-          <v-list-tile v-else @click="">
-            <v-list-tile-action>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>
-                {{ item.text }}
-
-
-              </v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </template>
+            <v-divider></v-divider>
+          </template>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
@@ -85,8 +34,10 @@
       <v-text-field
         light
         solo
+        v-model="query"
         prepend-icon="search"
         placeholder="Search"
+        @keyup.enter="search"
         style="max-width: 500px; min-width: 128px"
       ></v-text-field>
       <div class="d-flex align-center" style="margin-left: auto">
@@ -114,7 +65,7 @@
       </div>
     </v-toolbar>
     <v-content>
-      <router-view>
+      <router-view :key="$route.fullPath">
       </router-view>
     </v-content>
     <login ref="login" v-bind:method="signup"></login>
@@ -126,12 +77,22 @@
   import Login from './components/Login.vue'
   import Registration from './components/Registration.vue'
   import auth from './auth'
+  const API_URL = 'http://localhost:8000/api/'
+  const CATS = API_URL + 'categories/'
 
   export default {
     name: 'app',
     components: {
       'login': Login,
       'registration': Registration
+    },
+
+    created () {
+      this.axios.get(CATS)
+        .then(response => {
+      // JSON responses are automatically parsed.
+          this.categories = response.data
+        })
     },
     methods: {
       menu_method: function (item) {
@@ -148,47 +109,21 @@
       login: function () {
         this.$refs.registration.dialog_reg = false
         this.$refs.login.dialog_log = true
+      },
+      search: function () {
+        this.$router.push('/search')
       }
     },
     data: () => ({
       drawer: null,
       user: auth.user,
+      query: '',
+      categories: [],
       items1: [
         { title: 'Вход' },
         { title: 'Регистрация' }
       ],
-      items: [
-        {icon: 'contacts', text: 'Contacts'},
-        {icon: 'history', text: 'Frequently contacted'},
-        {icon: 'content_copy', text: 'Duplicates'},
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'Labels',
-          model: true,
-          children: [
-            {icon: 'add', text: 'Create label'}
-          ]
-        },
-        {
-          icon: 'keyboard_arrow_up',
-          'icon-alt': 'keyboard_arrow_down',
-          text: 'More',
-          model: false,
-          children: [
-            {text: 'Import'},
-            {text: 'Export'},
-            {text: 'Print'},
-            {text: 'Undo changes'},
-            {text: 'Other contacts'}
-          ]
-        },
-        {icon: 'settings', text: 'Settings'},
-        {icon: 'chat_bubble', text: 'Send feedback'},
-        {icon: 'help', text: 'Help'},
-        {icon: 'phonelink', text: 'App downloads'},
-        {icon: 'keyboard', text: 'Go to the old version'}
-      ]
+      items: {header: 'Категории'}
     }),
     props: {
       source: String

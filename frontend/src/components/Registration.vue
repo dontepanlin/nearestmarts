@@ -1,6 +1,5 @@
 <template>
   <v-dialog v-model="dialog_reg" width="600px">
-    <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
     <v-card>
       <v-toolbar style="flex: 0 0 auto;" dark class="primary">
         <v-toolbar-title class="text-md-center">Регистрация</v-toolbar-title>

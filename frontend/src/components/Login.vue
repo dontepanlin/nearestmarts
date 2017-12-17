@@ -1,6 +1,5 @@
 <template>
   <v-dialog v-model="dialog_log" width="600px">
-    <v-btn color="primary" dark slot="activator">Open Dialog</v-btn>
     <v-card>
       <v-toolbar style="flex: 0 0 auto;" dark class="primary">
         <v-toolbar-title class="text-md-center">Вход</v-toolbar-title>
@@ -81,7 +80,11 @@
             password: this.pass
           }
 
-          auth.login(this, credentials)
+          if (auth.login(this, credentials)) {
+            console.log('good')
+            this.email = ''
+            this.pass = ''
+          }
 //          this.axios.post(LOGIN_URL, {
 //            email: this.email,
 //            password: this.pass
