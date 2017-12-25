@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Search from '@/components/Search'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Registration from '@/components/Registration'
@@ -11,8 +12,8 @@ export default new Router({
   routes: [
     {
       path: '/search',
-      name: 'Home',
-      component: Home,
+      name: 'Search',
+      component: Search,
       props: this.user
     },
     {
@@ -24,6 +25,11 @@ export default new Router({
       path: '/registration',
       name: 'Registration',
       component: Registration
+    },
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
     }
   ]
 })

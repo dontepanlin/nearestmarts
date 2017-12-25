@@ -4,7 +4,8 @@ from .views import show_cats
 
 from .api import PlaceList, PlaceDetail, UserPlaceList
 from .api import CategoryList
-from .api import ItemList, ItemDetail, PlaceItemList, CategoryItemList
+from .api import ItemList, ItemDetail, PlaceItemList, CategoryItemList, CategoryPlaceList
+from .api import PiarList
 
 place_urls = [
     url(r'^(?P<pk>\d+)/items$', PlaceItemList.as_view(), name='placeitem-list'),
@@ -24,6 +25,8 @@ urlpatterns = [
     url(r'^cats/$', view=show_cats),
     url(r'^categories/$', CategoryList.as_view(), name='categories-list'),
     url(r'^categories/(?P<pk>\d+)/items', CategoryItemList.as_view(), name='categoryitem-list'),
+    url(r'^categories/(?P<pk>\d+)/places', CategoryPlaceList.as_view(), name='categoryplace-list'),
     url(r'^places/', include(place_urls)),
     url(r'^items/', include(item_urls)),
+    url(r'^piars/', PiarList.as_view(), name='piar-list'),
 ]

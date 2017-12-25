@@ -1,6 +1,6 @@
 from rest_auth.serializers import UserDetailsSerializer
 from rest_framework import serializers
-from .models import Place, Category, Item
+from .models import Place, Category, Item, Piar
 
 
 class UserSerializer(UserDetailsSerializer):
@@ -27,22 +27,26 @@ class ItemSerializer(serializers.ModelSerializer):
         model = Item
         fields = ('id', 'category', 'place', 'name', 'description', 'cost')
 
-class PlaceSerializer(serializers.ModelSerializer):
-    items = ItemSerializer(many=True, read_only=True)
-    class Meta:
-        model = Place
-        fields = ('id', 'user', 'name', 'description', 'lat', 'lon', 'items')
-
-
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name','parent')
+        fields = ('id', 'name','parent')
 
     def get_fields(self):
         fields = super(CategorySerializer, self).get_fields()
         fields['children'] = CategorySerializer(many=True)
         return fields
 
+class PlaceSerializer(serializers.ModelSerializer):
+    items = ItemSerializer(many=True, read_only=True)
+    categories = CategorySerializer(many=True)
+    class Meta:
+        model = Place
+        fields = ('id', 'user', 'name', 'description', 'lat', 'lon', 'items', 'categories')
 
+
+class PiarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Piar
+        fields = ('id', 'description', 'name', 'user', 'place', 'poster')
 

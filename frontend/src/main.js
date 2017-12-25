@@ -13,7 +13,14 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import('vuetify/dist/vuetify.min.css')
 
 Vue.config.productionTip = false
-Vue.use(Vuetify)
+Vue.use(Vuetify, {
+  theme: {
+    primary: '#FF7400',
+    secondary: '#009999',
+    accent: '#8c9eff',
+    error: '#b71c1c'
+  }
+})
 axios(
   {
     // `url` is the server URL that will be used for the request
@@ -121,6 +128,7 @@ Vue.use(VueGoogleMaps, {
 
 if (localStorage.getItem('token')) {
   axios.defaults.headers.common['Authorization'] = auth.getAuthHeader().Authorization
+  auth.checkAuth()
 }
 /* eslint-disable no-new */
 new Vue({

@@ -8,6 +8,7 @@ const API_URL = 'http://localhost:8000/api/'
 const LOGIN_URL = API_URL + 'users/login/'
 const REG_URL = API_URL + 'users/registration/'
 const USER_URL = API_URL + 'users/user/'
+const LOGOUT = API_URL + 'users/logout/'
 
 export default {
 
@@ -17,7 +18,10 @@ export default {
     location: {
       lat: 61.93,
       lng: 73.65
-    }
+    },
+    name: '',
+    first_name: '',
+    last_name: ''
   },
 
   // Send a request to the login URL and save the returned JWT
@@ -48,6 +52,10 @@ export default {
     ).then((response) => {
       console.log(response.data)
       localStorage.setItem('user', response.data)
+      this.user.name = response.data.email
+      this.user.first_name = response.data.first_name
+      this.user.last_name = response.data.last_name
+      console.log(this.user.name)
     }).catch(error => {
       if (error.response) {
         // The request was made and the server responded with a status code
@@ -89,14 +97,20 @@ export default {
   },
 
   // To log out, we just need to remove the token
-  logout () {
+  logout (context) {
+    context.axios.post(LOGOUT, {
+      withCredentials: true
+    })
     localStorage.removeItem('token')
     this.user.authenticated = false
-    delete this.axios.defaults.headers.common['Authorization']
+    delete axios.headers.common['Authorization']
   },
 
   checkAuth () {
     var jwt = localStorage.getItem('token')
+    var us = localStorage.getItem('user')
+    console.log(us)
+    this.user.name = us.email
     if (!jwt) {
       this.user.authenticated = false
     } else {

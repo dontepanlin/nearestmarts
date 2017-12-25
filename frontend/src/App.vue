@@ -10,17 +10,17 @@
       <v-list>
         <v-subheader v-text="items.header"></v-subheader>
         <template v-for="cat in categories">
-            <v-list-tile @click="">
-              <v-list-tile-content>
-                <v-list-tile-title>{{ cat.name }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-divider></v-divider>
-          </template>
+          <v-list-tile @click="">
+            <v-list-tile-content>
+              <v-list-tile-title>{{ cat.name }}</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider></v-divider>
+        </template>
       </v-list>
     </v-navigation-drawer>
     <v-toolbar
-      color="blue darken-3"
+      color="primary"
       dark
       app
       clipped-left
@@ -47,21 +47,37 @@
         <v-btn icon>
           <v-icon>notifications</v-icon>
         </v-btn>
-        <v-menu offset-y>
-      <v-btn icon large slot="activator">
-          <v-avatar size="32px" tile>
-            <img
-              src="https://vuetifyjs.com/static/doc-images/logo.svg"
-              alt="Vuetify"
-            >
-          </v-avatar>
-        </v-btn>
-      <v-list>
-        <v-list-tile v-for="item in items1" :key="item.title" @click="menu_method(item)">
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-        </v-list-tile>
-      </v-list>
-    </v-menu>
+        <v-menu offset-y :nudge-width="200">
+          <v-btn icon large slot="activator">
+            <v-avatar size="32px" tile>
+              <img
+                src="https://vuetifyjs.com/static/doc-images/logo.svg"
+                alt="Vuetify"
+              >
+            </v-avatar>
+          </v-btn>
+          <v-list  v-if="!user.authenticated">
+                        <v-list-tile v-for="item in items1" :key="item.title" @click="menu_method(item)">
+              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+            </v-list-tile>
+          </v-list>
+          <v-card v-if="user.authenticated">
+          <v-list>
+            <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Пользователь</v-list-tile-title>
+              <v-divider></v-divider>
+              <v-list-tile-sub-title>{{ user.name }}</v-list-tile-sub-title>
+            </v-list-tile-content>
+              </v-list-tile>
+          </v-list>
+             <v-card-actions>
+               <v-btn color="primary" flat>Profile</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="error" flat @click="logout()">Logout</v-btn>
+        </v-card-actions>
+          </v-card>
+        </v-menu>
       </div>
     </v-toolbar>
     <v-content>
@@ -70,6 +86,10 @@
     </v-content>
     <login ref="login" v-bind:method="signup"></login>
     <registration ref="registration" v-bind:method="login"></registration>
+    <v-footer class="pa-3" color="secondary">
+      <v-spacer></v-spacer>
+      <div>© {{ new Date().getFullYear() }}</div>
+    </v-footer>
   </v-app>
 </template>
 
@@ -88,9 +108,14 @@
     },
 
     created () {
+      if (auth.user.authenticated) {
+        auth.user_info(this)
+        auth.checkAuth()
+        console.log(this.user)
+      }
       this.axios.get(CATS)
         .then(response => {
-      // JSON responses are automatically parsed.
+          // JSON responses are automatically parsed.
           this.categories = response.data
         })
     },
@@ -112,6 +137,9 @@
       },
       search: function () {
         this.$router.push('/search')
+      },
+      logout: function () {
+        auth.logout(this)
       }
     },
     data: () => ({
@@ -120,8 +148,8 @@
       query: '',
       categories: [],
       items1: [
-        { title: 'Вход' },
-        { title: 'Регистрация' }
+        {title: 'Вход'},
+        {title: 'Регистрация'}
       ],
       items: {header: 'Категории'}
     }),

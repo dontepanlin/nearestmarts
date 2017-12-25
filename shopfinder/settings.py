@@ -144,6 +144,10 @@ SITE_ID = 1
 
 STATIC_URL = '/static/'
 
+_PATH = os.path.abspath(os.path.dirname(__file__))
+MEDIA_ROOT = os.path.join(_PATH, 'files', 'media')
+MEDIA_URL = '/media/'
+
 DEFAULT_INDEX_TABLESPACE = ''
 
 # AUTH_USER_MODEL = 'api.Users'

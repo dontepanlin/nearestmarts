@@ -2,7 +2,7 @@
   <gmap-map
     :center="cntr"
     :zoom="15"
-    style="width: 500px; height: 300px"
+    style="width: 100%; height: 400px"
   >
     <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
                       @closeclick="infoWinOpen=false">

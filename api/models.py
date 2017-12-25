@@ -30,19 +30,6 @@ def save_user_profile(sender, instance, **kwargs):
 #     type = models.IntegerField(default=0)
 #     #any other fields you want
 
-
-#   Модель торговой точки
-class Place(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
-    description = models.CharField(max_length=255, default='')
-    lat = models.FloatField(blank=True, null=True, verbose_name='Latitude')
-    lon = models.FloatField(blank=True, null=True, verbose_name='Longitude')
-
-    def __str__(self):
-        return self.name
-
-
 # Модель категории
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
@@ -54,6 +41,17 @@ class Category(MPTTModel):
     def __str__(self):
         return self.name
 
+#   Модель торговой точки
+class Place(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=255, default='')
+    lat = models.FloatField(blank=True, null=True, verbose_name='Latitude')
+    lon = models.FloatField(blank=True, null=True, verbose_name='Longitude')
+    categories = models.ManyToManyField(Category)
+
+    def __str__(self):
+        return self.name
 
 # Модель товара
 class Item(models.Model):
@@ -65,3 +63,10 @@ class Item(models.Model):
 
     def __str__(self):
         return self.name
+
+class Piar(models.Model):
+    name = models.CharField(max_length=100)
+    description = models.CharField(max_length=255, default='')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    place = models.ForeignKey(Place, on_delete=models.CASCADE)
+    poster = models.ImageField(blank=True, null=True, upload_to='posters/')

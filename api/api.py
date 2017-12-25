@@ -1,8 +1,30 @@
 from rest_framework import generics, permissions
+from django.contrib.auth.models import Group
 
 
-from .serializers import UserSerializer, PlaceSerializer, CategorySerializer, ItemSerializer
-from .models import User, Item, Place, Category
+from .serializers import UserSerializer, PlaceSerializer, CategorySerializer, ItemSerializer, PiarSerializer
+from .models import User, Item, Place, Category, Piar
+
+def is_in_group(user, group_name):
+    """
+    Takes a user and a group name, and returns `True` if the user is in that group.
+    """
+    return Group.objects.get(name=group_name).user_set.filter(id=user.id).exists()
+
+class HasGroupPermission(permissions.BasePermission):
+    """
+    Ensure user is in required groups.
+    """
+
+    def has_permission(self, request, view):
+        # Get a mapping of methods -> required group.
+        required_groups_mapping = getattr(view, 'required_groups', {})
+
+        # Determine the required groups for this particular request method.
+        required_groups = required_groups_mapping.get(request.method, [])
+
+        # Return True if the user has all the required groups.
+        return all([is_in_group(request.user, group_name) for group_name in required_groups])
 
 
 class PlaceList(generics.ListCreateAPIView):
@@ -10,7 +32,7 @@ class PlaceList(generics.ListCreateAPIView):
     serializer_class = PlaceSerializer
     queryset = Place.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
 
 class PlaceDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -18,7 +40,7 @@ class PlaceDetail(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PlaceSerializer
     queryset = Place.objects.all()
     permission_classes = [
-        permissions.AllowAny
+        permissions.IsAuthenticatedOrReadOnly
     ]
 
 class UserPlaceList(generics.ListAPIView):
@@ -67,7 +89,30 @@ class CategoryItemList(generics.ListAPIView):
     model = Item
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
 
     def get_queryset(self):
         queryset = super(CategoryItemList, self).get_queryset()
         return queryset.filter(category__id=self.kwargs.get('pk'))
+
+class CategoryPlaceList(generics.ListAPIView):
+    model = Place
+    serializer_class = PlaceSerializer
+    queryset = Place.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
+
+    def get_queryset(self):
+        queryset = super(CategoryPlaceList, self).get_queryset()
+        return queryset.filter(categories__id=self.kwargs.get('pk'))
+
+class PiarList(generics.ListCreateAPIView):
+    model = Piar
+    serializer_class = PiarSerializer
+    queryset = Piar.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
