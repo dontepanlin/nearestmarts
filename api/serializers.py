@@ -39,10 +39,22 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class PlaceSerializer(serializers.ModelSerializer):
     items = ItemSerializer(many=True, read_only=True)
-    categories = CategorySerializer(many=True)
+    categories = CategorySerializer(many=True, read_only=True)
+    cats_id = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all(),
+                                                 write_only=True, many=True)
     class Meta:
         model = Place
-        fields = ('id', 'user', 'name', 'description', 'lat', 'lon', 'items', 'categories')
+        fields = ('id', 'user', 'name', 'description', 'lat', 'lon', 'items', 'categories','cats_id')
+
+    def create(self, validated_data):
+        categories = validated_data.pop('cats_id')
+        place = Place.objects.create(**validated_data)
+
+        for tag in categories:
+            #//cat = Category.objects.get(pk=tag)
+            place.categories.add(tag)
+
+        return place
 
 
 class PiarSerializer(serializers.ModelSerializer):

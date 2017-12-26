@@ -5,7 +5,6 @@
       clipped
       app
       v-model="drawer"
-      class="blue accent-1"
     >
       <v-list>
         <v-subheader v-text="items.header"></v-subheader>
@@ -28,8 +27,8 @@
     >
       <v-toolbar-title :style="$vuetify.breakpoint.smAndUp ? 'width: 300px; min-width: 250px' : 'min-width: 72px'"
                        class="ml-0 pl-3">
-        <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-        <v-btn flat to="/"><span class="hidden-xs-only">Nearest Mart</span></v-btn>
+        <v-toolbar-side-icon @click.stop="drawer = !drawer" class="hidden-lg-and-up"></v-toolbar-side-icon>
+        <router-link to="/" class="white--text">FindMarts</router-link>
       </v-toolbar-title>
       <v-text-field
         light
@@ -41,6 +40,9 @@
         style="max-width: 500px; min-width: 128px"
       ></v-text-field>
       <div class="d-flex align-center" style="margin-left: auto">
+        <v-btn light flat class="white--text" v-if="user.authenticated" to="/mymarts">
+          My marts
+        </v-btn>
         <v-btn icon>
           <v-icon>apps</v-icon>
         </v-btn>
@@ -116,7 +118,7 @@
       this.axios.get(CATS)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.categories = response.data
+          this.categories = response.data.results
         })
     },
     methods: {
@@ -169,4 +171,7 @@
     color: #2c3e50;
     margin-top: 60px;
   }
+  A {
+    text-decoration: none; /* Убирает подчеркивание для ссылок */
+   }
 </style>

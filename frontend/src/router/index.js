@@ -4,6 +4,8 @@ import Search from '@/components/Search'
 import Home from '@/components/Home'
 import Login from '@/components/Login'
 import Registration from '@/components/Registration'
+import UserPlace from '@/components/UserPlace'
+import Place from '@/components/Place'
 
 Vue.use(Router)
 
@@ -30,6 +32,15 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/mymarts',
+      name: 'UserPlace',
+      component: UserPlace
+    },
+    {
+      path: '/place/:id',
+      component: Place
     }
   ]
 })

@@ -20,7 +20,7 @@ item_urls = [
 
 urlpatterns = [
     url(r'^users/', include('rest_auth.urls')),
-    url(r'^users/user/(?P<username>[0-9a-zA-Z_-]+)/places$', UserPlaceList.as_view(), name='userplace-list'),
+    url(r'^users/user/(?P<pk>\d+)/places$', UserPlaceList.as_view(), name='userplace-list'),
     url(r'^users/registration/', include('rest_auth.registration.urls')),
     url(r'^cats/$', view=show_cats),
     url(r'^categories/$', CategoryList.as_view(), name='categories-list'),

@@ -1,9 +1,15 @@
 from rest_framework import generics, permissions
+from rest_framework.pagination import PageNumberPagination
 from django.contrib.auth.models import Group
 
 
 from .serializers import UserSerializer, PlaceSerializer, CategorySerializer, ItemSerializer, PiarSerializer
 from .models import User, Item, Place, Category, Piar
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 100
+    page_size_query_param = 'page_size'
+    max_page_size = 1000
 
 def is_in_group(user, group_name):
     """
@@ -32,7 +38,7 @@ class PlaceList(generics.ListCreateAPIView):
     serializer_class = PlaceSerializer
     queryset = Place.objects.all()
     permission_classes = [
-        permissions.IsAuthenticatedOrReadOnly
+        permissions.AllowAny
     ]
 
 class PlaceDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -47,15 +53,19 @@ class UserPlaceList(generics.ListAPIView):
     model = Place
     serializer_class = PlaceSerializer
     queryset = Place.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
 
     def get_queryset(self):
         queryset = super(UserPlaceList, self).get_queryset()
-        return queryset.filter(user__username=self.kwargs.get('username'))
+        return queryset.filter(user__pk=self.kwargs.get('pk'))
 
 class CategoryList(generics.ListCreateAPIView):
     model = Category
     serializer_class = CategorySerializer
     queryset = Category.objects.all()
+    pagination_class = StandardResultsSetPagination
     permission_classes = [
         permissions.AllowAny
     ]
@@ -80,6 +90,9 @@ class PlaceItemList(generics.ListAPIView):
     model = Item
     serializer_class = ItemSerializer
     queryset = Item.objects.all()
+    permission_classes = [
+        permissions.AllowAny
+    ]
 
     def get_queryset(self):
         queryset = super(PlaceItemList, self).get_queryset()

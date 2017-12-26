@@ -16,7 +16,7 @@
       this.axios.get(PIARS)
         .then(response => {
           // JSON responses are automatically parsed.
-          this.piars = response.data
+          this.piars = response.data.results
         })
     },
     data () {

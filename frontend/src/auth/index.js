@@ -21,7 +21,8 @@ export default {
     },
     name: '',
     first_name: '',
-    last_name: ''
+    last_name: '',
+    pk: 0
   },
 
   // Send a request to the login URL and save the returned JWT
@@ -52,6 +53,7 @@ export default {
     ).then((response) => {
       console.log(response.data)
       localStorage.setItem('user', response.data)
+      this.user.pk = response.data.pk
       this.user.name = response.data.email
       this.user.first_name = response.data.first_name
       this.user.last_name = response.data.last_name
@@ -103,14 +105,19 @@ export default {
     })
     localStorage.removeItem('token')
     this.user.authenticated = false
-    delete axios.headers.common['Authorization']
+    delete axios.defaults.headers.common['Authorization']
   },
 
   checkAuth () {
     var jwt = localStorage.getItem('token')
     var us = localStorage.getItem('user')
     console.log(us)
-    this.user.name = us.email
+    if (us) {
+      this.user.name = us.email
+      this.user.pk = us.pk
+      this.user.first_name = us.first_name
+      this.user.last_name = us.last_name
+    }
     if (!jwt) {
       this.user.authenticated = false
     } else {

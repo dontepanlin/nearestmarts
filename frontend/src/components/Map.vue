@@ -1,8 +1,7 @@
 <template>
   <gmap-map
     :center="cntr"
-    :zoom="15"
-    style="width: 100%; height: 400px"
+    :zoom="17"
   >
     <gmap-info-window :options="infoOptions" :position="infoWindowPos" :opened="infoWinOpen"
                       @closeclick="infoWinOpen=false">

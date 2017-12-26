@@ -9,6 +9,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import VueCookie from 'vue-cookie'
 import auth from './auth'
+import VueFuse from 'vue-fuse'
 import * as VueGoogleMaps from 'vue2-google-maps'
 import('vuetify/dist/vuetify.min.css')
 
@@ -116,6 +117,7 @@ axios(
 Vue.use(VueAxios, axios)
 Vue.use(VueLocalStorage)
 Vue.use(VueCookie)
+Vue.use(VueFuse)
 Vue.use(VueGoogleMaps, {
   load: {
     key: 'AIzaSyDPUEbKSTrgVdw5OvcxrfudZuFv9jYcFaY',
