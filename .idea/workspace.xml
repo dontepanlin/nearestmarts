@@ -282,8 +282,8 @@
           <file leaf-file-name="models.py" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/api/models.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="221">
-                  <caret line="17" column="49" lean-forward="false" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+                <state relative-caret-position="281">
+                  <caret line="40" column="52" lean-forward="false" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
                   <folding />
                 </state>
               </provider>
@@ -924,7 +924,14 @@
       <option name="project" value="LOCAL" />
       <updated>1514251280414</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="on delete">
+      <created>1514253692284</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1514253692284</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TodoView">
@@ -982,7 +989,8 @@
     <MESSAGE value="geolocation for places added" />
     <MESSAGE value="some new features" />
     <MESSAGE value="another cjanges mother fucker" />
-    <option name="LAST_COMMIT_MESSAGE" value="another cjanges mother fucker" />
+    <MESSAGE value="on delete" />
+    <option name="LAST_COMMIT_MESSAGE" value="on delete" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1329,8 +1337,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/api/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="17" column="49" lean-forward="false" selection-start-line="17" selection-start-column="49" selection-end-line="17" selection-end-column="49" />
+        <state relative-caret-position="281">
+          <caret line="40" column="52" lean-forward="false" selection-start-line="40" selection-start-column="52" selection-end-line="40" selection-end-column="52" />
           <folding />
         </state>
       </provider>

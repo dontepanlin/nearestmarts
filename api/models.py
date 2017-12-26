@@ -33,7 +33,12 @@ def save_user_profile(sender, instance, **kwargs):
 # Модель категории
 class Category(MPTTModel):
     name = models.CharField(max_length=50, unique=True)
-    parent = TreeForeignKey('self', null=True, blank=True, related_name='children', db_index=False)
+    parent = TreeForeignKey('self',
+                            null=True,
+                            blank=True,
+                            related_name='children',
+                            db_index=False,
+                            on_delete=models.CASCADE)
 
     class MPTTMeta:
         order_insertion_by = ['name']
