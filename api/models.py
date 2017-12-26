@@ -9,7 +9,7 @@ from mptt.models import MPTTModel, TreeForeignKey
 # Create your models here.
 # Model User.
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     # custom fields for user
     type = models.IntegerField(default=0)
 
