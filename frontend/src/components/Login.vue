@@ -72,7 +72,7 @@
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
-//           Native form submission is not yet supported
+        //           Native form submission is not yet supported
           console.log(this.email)
           console.log(this.pass)
           var credentials = {
@@ -85,16 +85,16 @@
             this.email = ''
             this.pass = ''
           }
-//          this.axios.post(LOGIN_URL, {
-//            email: this.email,
-//            password: this.pass
-//          }).then((response) => {
-//            localStorage.setItem('token', response.data.token)
-//            this.dialog = false
-//          }).catch(error => {
-//            console.log('Error login')
-//            console.log(error)
-//          })
+        //          this.axios.post(LOGIN_URL, {
+        //            email: this.email,
+        //            password: this.pass
+        //          }).then((response) => {
+        //            localStorage.setItem('token', response.data.token)
+        //            this.dialog = false
+        //          }).catch(error => {
+        //            console.log('Error login')
+        //            console.log(error)
+        //          })
         }
       }
     }

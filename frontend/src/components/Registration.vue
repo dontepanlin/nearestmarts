@@ -83,7 +83,7 @@
             return pattern.test(value) || 'pass must contain ch and nums.'
           },
           conf: (value) => {
-              // eslint-disable-next-line
+            // eslint-disable-next-line
             console.log(this.password)
             return value === this.password || 'НЕе совпадают'
           }
@@ -93,7 +93,7 @@
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
-//           Native form submission is not yet supported
+        //           Native form submission is not yet supported
           var credentials = {
             email: this.email,
             password1: this.password,
@@ -102,14 +102,14 @@
           }
 
           auth.signup(this, credentials)
-//          this.axios.post(REG_URL, {
-//            email: this.email,
-//            password1: this.password,
-//            password2: this.confirm,
-//            username: this.email
-//          }).then((response) => {
-//            console.log(response.data)
-//          })
+        //          this.axios.post(REG_URL, {
+        //            email: this.email,
+        //            password1: this.password,
+        //            password2: this.confirm,
+        //            username: this.email
+        //          }).then((response) => {
+        //            console.log(response.data)
+        //          })
         }
       }
     }

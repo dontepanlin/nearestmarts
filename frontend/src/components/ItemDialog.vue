@@ -79,7 +79,7 @@
     methods: {
       submit () {
         if (this.$refs.form.validate()) {
-//           Native form submission is not yet supported
+        //           Native form submission is not yet supported
           this.axios.post(ITEM, {
             withCredentials: true,
             category: this.e7,
